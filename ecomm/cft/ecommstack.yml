@@ -1,0 +1,1053 @@
+Resources:
+  ecommvpc93A6101E:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/Resource
+  ecommvpcinternalSubnet1Subnet67F615E2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.0.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: internal
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: kubernetes.io/role/internal-elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/internalSubnet1
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet1/Subnet
+  ecommvpcinternalSubnet1RouteTable8E2B3602:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      Tags:
+        - Key: kubernetes.io/role/internal-elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/internalSubnet1
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet1/RouteTable
+  ecommvpcinternalSubnet1RouteTableAssociationF3C3B30C:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcinternalSubnet1RouteTable8E2B3602
+      SubnetId:
+        Ref: ecommvpcinternalSubnet1Subnet67F615E2
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet1/RouteTableAssociation
+  ecommvpcinternalSubnet1DefaultRoute39E91262:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcinternalSubnet1RouteTable8E2B3602
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: ecommvpcpublicSubnet1NATGatewayE00F0C14
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet1/DefaultRoute
+  ecommvpcinternalSubnet2Subnet97265B31:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.1.0/24
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: internal
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: kubernetes.io/role/internal-elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/internalSubnet2
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet2/Subnet
+  ecommvpcinternalSubnet2RouteTable441E22CF:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      Tags:
+        - Key: kubernetes.io/role/internal-elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/internalSubnet2
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet2/RouteTable
+  ecommvpcinternalSubnet2RouteTableAssociationBA2BAE43:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcinternalSubnet2RouteTable441E22CF
+      SubnetId:
+        Ref: ecommvpcinternalSubnet2Subnet97265B31
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet2/RouteTableAssociation
+  ecommvpcinternalSubnet2DefaultRouteAC2E4AA0:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcinternalSubnet2RouteTable441E22CF
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: ecommvpcpublicSubnet2NATGatewayEC2AF1B5
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/internalSubnet2/DefaultRoute
+  ecommvpcpublicSubnet1SubnetF1D750F1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet1/Subnet
+  ecommvpcpublicSubnet1RouteTable87F874C5:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      Tags:
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet1/RouteTable
+  ecommvpcpublicSubnet1RouteTableAssociationBE3F1084:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcpublicSubnet1RouteTable87F874C5
+      SubnetId:
+        Ref: ecommvpcpublicSubnet1SubnetF1D750F1
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet1/RouteTableAssociation
+  ecommvpcpublicSubnet1DefaultRoute2C91630D:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcpublicSubnet1RouteTable87F874C5
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: ecommvpcIGW4981B361
+    DependsOn:
+      - ecommvpcVPCGW51A9825B
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet1/DefaultRoute
+  ecommvpcpublicSubnet1EIP28C8E096:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet1
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet1/EIP
+  ecommvpcpublicSubnet1NATGatewayE00F0C14:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: ecommvpcpublicSubnet1SubnetF1D750F1
+      AllocationId:
+        Fn::GetAtt:
+          - ecommvpcpublicSubnet1EIP28C8E096
+          - AllocationId
+      Tags:
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet1
+    DependsOn:
+      - ecommvpcpublicSubnet1DefaultRoute2C91630D
+      - ecommvpcpublicSubnet1RouteTableAssociationBE3F1084
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet1/NATGateway
+  ecommvpcpublicSubnet2Subnet844A1E9E:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.0.3.0/24
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: public
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet2
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet2/Subnet
+  ecommvpcpublicSubnet2RouteTableE6DC067D:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      Tags:
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet2
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet2/RouteTable
+  ecommvpcpublicSubnet2RouteTableAssociation27175B0C:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcpublicSubnet2RouteTableE6DC067D
+      SubnetId:
+        Ref: ecommvpcpublicSubnet2Subnet844A1E9E
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet2/RouteTableAssociation
+  ecommvpcpublicSubnet2DefaultRoute3D364926:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: ecommvpcpublicSubnet2RouteTableE6DC067D
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: ecommvpcIGW4981B361
+    DependsOn:
+      - ecommvpcVPCGW51A9825B
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet2/DefaultRoute
+  ecommvpcpublicSubnet2EIP98B8CBCC:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet2
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet2/EIP
+  ecommvpcpublicSubnet2NATGatewayEC2AF1B5:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: ecommvpcpublicSubnet2Subnet844A1E9E
+      AllocationId:
+        Fn::GetAtt:
+          - ecommvpcpublicSubnet2EIP98B8CBCC
+          - AllocationId
+      Tags:
+        - Key: kubernetes.io/role/elb
+          Value: "1"
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc/publicSubnet2
+    DependsOn:
+      - ecommvpcpublicSubnet2DefaultRoute3D364926
+      - ecommvpcpublicSubnet2RouteTableAssociation27175B0C
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/publicSubnet2/NATGateway
+  ecommvpcIGW4981B361:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: CdktestStack/ecomm_vpc
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/IGW
+  ecommvpcVPCGW51A9825B:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: ecommvpc93A6101E
+      InternetGatewayId:
+        Ref: ecommvpcIGW4981B361
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/VPCGW
+  ecommvpcRestrictDefaultSecurityGroupCustomResourceB609BF21:
+    Type: Custom::VpcRestrictDefaultSG
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E
+          - Arn
+      DefaultSecurityGroupId:
+        Fn::GetAtt:
+          - ecommvpc93A6101E
+          - DefaultSecurityGroup
+      Account:
+        Ref: AWS::AccountId
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_vpc/RestrictDefaultSecurityGroupCustomResource/Default
+  CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+      Policies:
+        - PolicyName: Inline
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - ec2:AuthorizeSecurityGroupIngress
+                  - ec2:AuthorizeSecurityGroupEgress
+                  - ec2:RevokeSecurityGroupIngress
+                  - ec2:RevokeSecurityGroupEgress
+                Resource:
+                  - Fn::Join:
+                      - ""
+                      - - "arn:"
+                        - Ref: AWS::Partition
+                        - ":ec2:"
+                        - Ref: AWS::Region
+                        - ":"
+                        - Ref: AWS::AccountId
+                        - :security-group/
+                        - Fn::GetAtt:
+                            - ecommvpc93A6101E
+                            - DefaultSecurityGroup
+    Metadata:
+      aws:cdk:path: CdktestStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Role
+  CustomVpcRestrictDefaultSGCustomResourceProviderHandlerDC833E5E:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: e77031893275c08bcaa0a774aa8b611727afd045b3b5d8e1e6f0f04063d9d386.zip
+      Timeout: 900
+      MemorySize: 128
+      Handler: __entrypoint__.handler
+      Role:
+        Fn::GetAtt:
+          - CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0
+          - Arn
+      Runtime: nodejs16.x
+      Description: Lambda function for removing all inbound/outbound rules from the VPC default security group
+    DependsOn:
+      - CustomVpcRestrictDefaultSGCustomResourceProviderRole26592FE0
+    Metadata:
+      aws:cdk:path: CdktestStack/Custom::VpcRestrictDefaultSGCustomResourceProvider/Handler
+      aws:asset:path: asset.e77031893275c08bcaa0a774aa8b611727afd045b3b5d8e1e6f0f04063d9d386
+      aws:asset:property: Code
+  ecommeksKubectlHandlerRoleC25D12EA:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+        - Fn::If:
+            - ecommeksHasEcrPublic2B2B7D82
+            - Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - :iam::aws:policy/AmazonElasticContainerRegistryPublicReadOnly
+            - Ref: AWS::NoValue
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/KubectlHandlerRole/Resource
+  ecommeksKubectlHandlerRoleDefaultPolicy4A1D66B6:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: eks:DescribeCluster
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - ecommeks5E8C4851
+                - Arn
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - ecommeksCreationRoleB6C9D2FC
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: ecommeksKubectlHandlerRoleDefaultPolicy4A1D66B6
+      Roles:
+        - Ref: ecommeksKubectlHandlerRoleC25D12EA
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/KubectlHandlerRole/DefaultPolicy/Resource
+  ecommeksRole5888628A:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: eks.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEKSClusterPolicy
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/Role/Resource
+  ecommeksControlPlaneSecurityGroup4388D44E:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: EKS Control Plane Security Group
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      VpcId:
+        Ref: ecommvpc93A6101E
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/ControlPlaneSecurityGroup/Resource
+  ecommeksCreationRoleB6C9D2FC:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              AWS:
+                - Fn::GetAtt:
+                    - awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454
+                    - Outputs.CdktestStackawscdkawseksClusterResourceProviderIsCompleteHandlerServiceRole2E052BE9Arn
+                - Fn::GetAtt:
+                    - awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454
+                    - Outputs.CdktestStackawscdkawseksClusterResourceProviderOnEventHandlerServiceRoleCE79A257Arn
+                - Fn::GetAtt:
+                    - ecommeksKubectlHandlerRoleC25D12EA
+                    - Arn
+        Version: "2012-10-17"
+    DependsOn:
+      - ecommvpcIGW4981B361
+      - ecommvpcinternalSubnet1DefaultRoute39E91262
+      - ecommvpcinternalSubnet1RouteTable8E2B3602
+      - ecommvpcinternalSubnet1RouteTableAssociationF3C3B30C
+      - ecommvpcinternalSubnet1Subnet67F615E2
+      - ecommvpcinternalSubnet2DefaultRouteAC2E4AA0
+      - ecommvpcinternalSubnet2RouteTable441E22CF
+      - ecommvpcinternalSubnet2RouteTableAssociationBA2BAE43
+      - ecommvpcinternalSubnet2Subnet97265B31
+      - ecommvpcpublicSubnet1DefaultRoute2C91630D
+      - ecommvpcpublicSubnet1EIP28C8E096
+      - ecommvpcpublicSubnet1NATGatewayE00F0C14
+      - ecommvpcpublicSubnet1RouteTable87F874C5
+      - ecommvpcpublicSubnet1RouteTableAssociationBE3F1084
+      - ecommvpcpublicSubnet1SubnetF1D750F1
+      - ecommvpcpublicSubnet2DefaultRoute3D364926
+      - ecommvpcpublicSubnet2EIP98B8CBCC
+      - ecommvpcpublicSubnet2NATGatewayEC2AF1B5
+      - ecommvpcpublicSubnet2RouteTableE6DC067D
+      - ecommvpcpublicSubnet2RouteTableAssociation27175B0C
+      - ecommvpcpublicSubnet2Subnet844A1E9E
+      - ecommvpc93A6101E
+      - ecommvpcRestrictDefaultSecurityGroupCustomResourceB609BF21
+      - ecommvpcVPCGW51A9825B
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/Resource/CreationRole/Resource
+  ecommeksCreationRoleDefaultPolicyBD882FC7:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: iam:PassRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - ecommeksRole5888628A
+                - Arn
+          - Action:
+              - eks:CreateCluster
+              - eks:CreateFargateProfile
+              - eks:DeleteCluster
+              - eks:DescribeCluster
+              - eks:DescribeUpdate
+              - eks:TagResource
+              - eks:UntagResource
+              - eks:UpdateClusterConfig
+              - eks:UpdateClusterVersion
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":eks:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :cluster/ecomm_eks
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":eks:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :cluster/ecomm_eks/*
+          - Action:
+              - eks:DeleteFargateProfile
+              - eks:DescribeFargateProfile
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":eks:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :fargateprofile/ecomm_eks/*
+          - Action:
+              - ec2:DescribeDhcpOptions
+              - ec2:DescribeInstances
+              - ec2:DescribeNetworkInterfaces
+              - ec2:DescribeRouteTables
+              - ec2:DescribeSecurityGroups
+              - ec2:DescribeSubnets
+              - ec2:DescribeVpcs
+              - iam:CreateServiceLinkedRole
+              - iam:GetRole
+              - iam:listAttachedRolePolicies
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ecommeksCreationRoleDefaultPolicyBD882FC7
+      Roles:
+        - Ref: ecommeksCreationRoleB6C9D2FC
+    DependsOn:
+      - ecommvpcIGW4981B361
+      - ecommvpcinternalSubnet1DefaultRoute39E91262
+      - ecommvpcinternalSubnet1RouteTable8E2B3602
+      - ecommvpcinternalSubnet1RouteTableAssociationF3C3B30C
+      - ecommvpcinternalSubnet1Subnet67F615E2
+      - ecommvpcinternalSubnet2DefaultRouteAC2E4AA0
+      - ecommvpcinternalSubnet2RouteTable441E22CF
+      - ecommvpcinternalSubnet2RouteTableAssociationBA2BAE43
+      - ecommvpcinternalSubnet2Subnet97265B31
+      - ecommvpcpublicSubnet1DefaultRoute2C91630D
+      - ecommvpcpublicSubnet1EIP28C8E096
+      - ecommvpcpublicSubnet1NATGatewayE00F0C14
+      - ecommvpcpublicSubnet1RouteTable87F874C5
+      - ecommvpcpublicSubnet1RouteTableAssociationBE3F1084
+      - ecommvpcpublicSubnet1SubnetF1D750F1
+      - ecommvpcpublicSubnet2DefaultRoute3D364926
+      - ecommvpcpublicSubnet2EIP98B8CBCC
+      - ecommvpcpublicSubnet2NATGatewayEC2AF1B5
+      - ecommvpcpublicSubnet2RouteTableE6DC067D
+      - ecommvpcpublicSubnet2RouteTableAssociation27175B0C
+      - ecommvpcpublicSubnet2Subnet844A1E9E
+      - ecommvpc93A6101E
+      - ecommvpcRestrictDefaultSecurityGroupCustomResourceB609BF21
+      - ecommvpcVPCGW51A9825B
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/Resource/CreationRole/DefaultPolicy/Resource
+  ecommeks5E8C4851:
+    Type: Custom::AWSCDK-EKS-Cluster
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454
+          - Outputs.CdktestStackawscdkawseksClusterResourceProviderframeworkonEventD80BD395Arn
+      Config:
+        name: ecomm_eks
+        version: "1.26"
+        roleArn:
+          Fn::GetAtt:
+            - ecommeksRole5888628A
+            - Arn
+        resourcesVpcConfig:
+          subnetIds:
+            - Ref: ecommvpcpublicSubnet1SubnetF1D750F1
+            - Ref: ecommvpcpublicSubnet2Subnet844A1E9E
+            - Ref: ecommvpcinternalSubnet1Subnet67F615E2
+            - Ref: ecommvpcinternalSubnet2Subnet97265B31
+          securityGroupIds:
+            - Fn::GetAtt:
+                - ecommeksControlPlaneSecurityGroup4388D44E
+                - GroupId
+          endpointPublicAccess: true
+          endpointPrivateAccess: true
+      AssumeRoleArn:
+        Fn::GetAtt:
+          - ecommeksCreationRoleB6C9D2FC
+          - Arn
+      AttributesRevision: 2
+    DependsOn:
+      - ecommeksCreationRoleDefaultPolicyBD882FC7
+      - ecommeksCreationRoleB6C9D2FC
+      - ecommvpcIGW4981B361
+      - ecommvpcinternalSubnet1DefaultRoute39E91262
+      - ecommvpcinternalSubnet1RouteTable8E2B3602
+      - ecommvpcinternalSubnet1RouteTableAssociationF3C3B30C
+      - ecommvpcinternalSubnet1Subnet67F615E2
+      - ecommvpcinternalSubnet2DefaultRouteAC2E4AA0
+      - ecommvpcinternalSubnet2RouteTable441E22CF
+      - ecommvpcinternalSubnet2RouteTableAssociationBA2BAE43
+      - ecommvpcinternalSubnet2Subnet97265B31
+      - ecommvpcpublicSubnet1DefaultRoute2C91630D
+      - ecommvpcpublicSubnet1EIP28C8E096
+      - ecommvpcpublicSubnet1NATGatewayE00F0C14
+      - ecommvpcpublicSubnet1RouteTable87F874C5
+      - ecommvpcpublicSubnet1RouteTableAssociationBE3F1084
+      - ecommvpcpublicSubnet1SubnetF1D750F1
+      - ecommvpcpublicSubnet2DefaultRoute3D364926
+      - ecommvpcpublicSubnet2EIP98B8CBCC
+      - ecommvpcpublicSubnet2NATGatewayEC2AF1B5
+      - ecommvpcpublicSubnet2RouteTableE6DC067D
+      - ecommvpcpublicSubnet2RouteTableAssociation27175B0C
+      - ecommvpcpublicSubnet2Subnet844A1E9E
+      - ecommvpc93A6101E
+      - ecommvpcRestrictDefaultSecurityGroupCustomResourceB609BF21
+      - ecommvpcVPCGW51A9825B
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/Resource/Resource/Default
+  ecommeksKubectlReadyBarrier876431A7:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Type: String
+      Value: aws:cdk:eks:kubectl-ready
+    DependsOn:
+      - ecommeksCreationRoleDefaultPolicyBD882FC7
+      - ecommeksCreationRoleB6C9D2FC
+      - ecommeks5E8C4851
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/KubectlReadyBarrier
+  ecommeksNodegroupDefaultCapacityNodeGroupRole317B0638:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEKS_CNI_Policy
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/NodegroupDefaultCapacity/NodeGroupRole/Resource
+  ecommeksNodegroupDefaultCapacity3C77E68C:
+    Type: AWS::EKS::Nodegroup
+    Properties:
+      ClusterName:
+        Ref: ecommeks5E8C4851
+      NodeRole:
+        Fn::GetAtt:
+          - ecommeksNodegroupDefaultCapacityNodeGroupRole317B0638
+          - Arn
+      Subnets:
+        - Ref: ecommvpcinternalSubnet1Subnet67F615E2
+        - Ref: ecommvpcinternalSubnet2Subnet97265B31
+      AmiType: AL2_x86_64
+      ForceUpdateEnabled: true
+      InstanceTypes:
+        - m5.large
+      ScalingConfig:
+        DesiredSize: 2
+        MaxSize: 2
+        MinSize: 2
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/NodegroupDefaultCapacity/Resource
+  ecommeksAwsAuthmanifestE9FCF39D:
+    Type: Custom::AWSCDK-EKS-KubernetesResource
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - awscdkawseksKubectlProviderNestedStackawscdkawseksKubectlProviderNestedStackResourceA7AEBA6B
+          - Outputs.CdktestStackawscdkawseksKubectlProviderframeworkonEvent90805872Arn
+      Manifest:
+        Fn::Join:
+          - ""
+          - - '[{"apiVersion":"v1","kind":"ConfigMap","metadata":{"name":"aws-auth","namespace":"kube-system","labels":{"aws.cdk.eks/prune-c801d93df7f954d199e3423108d85d4798253c7f28":""}},"data":{"mapRoles":"[{\"rolearn\":\"'
+            - Fn::GetAtt:
+                - ecommeksNodegroupDefaultCapacityNodeGroupRole317B0638
+                - Arn
+            - \",\"username\":\"system:node:{{EC2PrivateDNSName}}\",\"groups\":[\"system:bootstrappers\",\"system:nodes\"]},{\"rolearn\":\"
+            - Fn::GetAtt:
+                - ecommeksNodegroupecommeksnodegroupNodeGroupRole21A858E9
+                - Arn
+            - \",\"username\":\"system:node:{{EC2PrivateDNSName}}\",\"groups\":[\"system:bootstrappers\",\"system:nodes\"]}]","mapUsers":"[]","mapAccounts":"[]"}}]
+      ClusterName:
+        Ref: ecommeks5E8C4851
+      RoleArn:
+        Fn::GetAtt:
+          - ecommeksCreationRoleB6C9D2FC
+          - Arn
+      PruneLabel: aws.cdk.eks/prune-c801d93df7f954d199e3423108d85d4798253c7f28
+      Overwrite: true
+    DependsOn:
+      - ecommeksKubectlReadyBarrier876431A7
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/AwsAuth/manifest/Resource/Default
+  ecommeksNodegroupecommeksnodegroupNodeGroupRole21A858E9:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEKSWorkerNodePolicy
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEKS_CNI_Policy
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/Nodegroupecomm_eks_nodegroup/NodeGroupRole/Resource
+  ecommeksNodegroupecommeksnodegroupF15A8A54:
+    Type: AWS::EKS::Nodegroup
+    Properties:
+      ClusterName:
+        Ref: ecommeks5E8C4851
+      NodeRole:
+        Fn::GetAtt:
+          - ecommeksNodegroupecommeksnodegroupNodeGroupRole21A858E9
+          - Arn
+      Subnets:
+        - Ref: ecommvpcinternalSubnet1Subnet67F615E2
+        - Ref: ecommvpcinternalSubnet2Subnet97265B31
+      ForceUpdateEnabled: true
+      ScalingConfig:
+        DesiredSize: 2
+        MaxSize: 2
+        MinSize: 1
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_eks/Nodegroupecomm_eks_nodegroup/Resource
+  awscdkawseksClusterResourceProviderNestedStackawscdkawseksClusterResourceProviderNestedStackResource9827C454:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:
+        Fn::Join:
+          - ""
+          - - https://s3.
+            - Ref: AWS::Region
+            - "."
+            - Ref: AWS::URLSuffix
+            - /
+            - Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+            - /afd3b94f6a96965ddd8f5565c4497e00352e9a77b18b84fd520da7b04debe4cf.json
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdktestStack/@aws-cdk--aws-eks.ClusterResourceProvider.NestedStack/@aws-cdk--aws-eks.ClusterResourceProvider.NestedStackResource
+      aws:asset:path: CdktestStackawscdkawseksClusterResourceProvider3922555C.nested.template.json
+      aws:asset:property: TemplateURL
+  awscdkawseksKubectlProviderNestedStackawscdkawseksKubectlProviderNestedStackResourceA7AEBA6B:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL:
+        Fn::Join:
+          - ""
+          - - https://s3.
+            - Ref: AWS::Region
+            - "."
+            - Ref: AWS::URLSuffix
+            - /
+            - Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+            - /08f7502e8d37975fdb7d89b3f42e1e39df42f76437a0884add6e7cf4ec6a4bda.json
+      Parameters:
+        referencetoCdktestStackecommeksKubectlHandlerRole5844E553Arn:
+          Fn::GetAtt:
+            - ecommeksKubectlHandlerRoleC25D12EA
+            - Arn
+        referencetoCdktestStackecommvpcinternalSubnet1SubnetAC85B636Ref:
+          Ref: ecommvpcinternalSubnet1Subnet67F615E2
+        referencetoCdktestStackecommvpcinternalSubnet2Subnet004658BFRef:
+          Ref: ecommvpcinternalSubnet2Subnet97265B31
+        referencetoCdktestStackecommeks343C45EAClusterSecurityGroupId:
+          Fn::GetAtt:
+            - ecommeks5E8C4851
+            - ClusterSecurityGroupId
+    DependsOn:
+      - ecommeksKubectlHandlerRoleDefaultPolicy4A1D66B6
+      - ecommeksKubectlHandlerRoleC25D12EA
+      - ecommvpcinternalSubnet1DefaultRoute39E91262
+      - ecommvpcinternalSubnet1RouteTableAssociationF3C3B30C
+      - ecommvpcinternalSubnet2DefaultRouteAC2E4AA0
+      - ecommvpcinternalSubnet2RouteTableAssociationBA2BAE43
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: CdktestStack/@aws-cdk--aws-eks.KubectlProvider.NestedStack/@aws-cdk--aws-eks.KubectlProvider.NestedStackResource
+      aws:asset:path: CdktestStackawscdkawseksKubectlProviderA0269E09.nested.template.json
+      aws:asset:property: TemplateURL
+  ecommtrafficInstanceSecurityGroup775BA0DF:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: CdktestStack/ecomm_traffic/InstanceSecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      Tags:
+        - Key: Name
+          Value: CdktestStack/ecomm_traffic
+      VpcId:
+        Ref: ecommvpc93A6101E
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_traffic/InstanceSecurityGroup/Resource
+  ecommtrafficInstanceRoleE110843D:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+        Version: "2012-10-17"
+      Tags:
+        - Key: Name
+          Value: CdktestStack/ecomm_traffic
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_traffic/InstanceRole/Resource
+  ecommtrafficInstanceProfile8A166DB6:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: ecommtrafficInstanceRoleE110843D
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_traffic/InstanceProfile
+  ecommtraffic1170D829:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      IamInstanceProfile:
+        Ref: ecommtrafficInstanceProfile8A166DB6
+      ImageId:
+        Ref: SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter
+      InstanceType: t2.micro
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - ecommtrafficInstanceSecurityGroup775BA0DF
+            - GroupId
+      SubnetId:
+        Ref: ecommvpcinternalSubnet1Subnet67F615E2
+      Tags:
+        - Key: Name
+          Value: CdktestStack/ecomm_traffic
+      UserData:
+        Fn::Base64: "#!/bin/bash"
+    DependsOn:
+      - ecommtrafficInstanceRoleE110843D
+    Metadata:
+      aws:cdk:path: CdktestStack/ecomm_traffic/Resource
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/21RwW7CMAz9Fu4hG2wHrlU1IYSGqnbiOqWpAdM2QYkDQlX/fW47lk3ayX4vjt+zvZSrF7mYqZuf66qeN1jKriCla8HUZwd6Kbv9RYv0YPZZKjKHV0VQhNIADWTMchsIPlTZQOQjl3hvNSpCa36KRRbKBnVs8bbJhrBTtGaRm7oPaGMIHBf8otjJN0qIvZ5aMCQK0MEh3dfOhsto4Q+xMZ6U0TC1nPJeQO1llzbBs4bY2QqOj98RJDefBDqJbShHI+DflcEDeOoFqlZ2uZ1mHmNmeaTRZcweepmzB2yg70UO3gY3uGFp20bIXf5/4r9XrNglbxKIT3REcxzqU2sqfOx1Ot0grpxq2avrheFJ5Nk/XRcr+SqfZ2ePOHfBELYg8yl+AQ4JC8YHAgAA
+    Metadata:
+      aws:cdk:path: CdktestStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Conditions:
+  ecommeksHasEcrPublic2B2B7D82:
+    Fn::Equals:
+      - Ref: AWS::Partition
+      - aws
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+Parameters:
+  SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-gp2
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Rules:
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+
